@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ReviewActivity">
     <TextView
-        android:id="@+id/tvTitle"
+        android:id="@+id/tvReviewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
@@ -19,19 +19,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etUserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:ems="10"
-        android:hint="Enter username"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
-
-    <EditText
         android:id="@+id/etEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +26,7 @@
         android:ems="10"
         android:hint="Enter email address"
         android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@+id/etUserName"
+        app:layout_constraintTop_toBottomOf="@+id/tvReviewTitle"
         tools:layout_editor_absoluteX="98dp" />
 
     <EditText
@@ -52,4 +39,15 @@
         android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@+id/etEmail"
         tools:layout_editor_absoluteX="99dp" />
+
+    <EditText
+        android:id="@+id/etComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="Enter comment"
+        app:layout_constraintTop_toBottomOf="@+id/etPassword"
+        tools:layout_editor_absoluteX="98dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
