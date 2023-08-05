@@ -26,7 +26,8 @@ public class RestaurantsActivity extends AppCompatActivity {
 
     ListView resList;
     ArrayList<HashMap<String, String>> restaurantsList;
-    private static String URL_GET_RESTAURANTS = MainActivity.SERVER_URL+"/restaurants.php";
+    //private static String URL_GET_RESTAURANTS = MainActivity.SERVER_URL+"/restaurants.php";
+    private static String URL_GET_RESTAURANTS ="http://192.168.68.51:8080/reviews-api/restaurants.php";
     JSONArray restaurants = null;
 
     @Override
@@ -45,7 +46,7 @@ public class RestaurantsActivity extends AppCompatActivity {
         JsonObjectRequest json_obj_req = new JsonObjectRequest(Request.Method.GET, url, json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                checkResponse(response,json);
+                checkResponse(response);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -57,44 +58,32 @@ public class RestaurantsActivity extends AppCompatActivity {
 
     } // postData end
 
-    public void checkResponse(JSONObject response, JSONObject c) {
-        try {
-            if (response.getInt("status") == 1) {
-                System.out.println("status ok. here");
-                restaurants = response.getJSONArray("data");
-                System.out.println("data length: " + restaurants.length());
-                for (int i = 0; i < restaurants.length(); i++) {
+    public void checkResponse(JSONObject response){
+        try{
+            if(response.getInt("status")==1){
+                // get data
+                JSONArray restaurants = response.getJSONArray("data");
+
+                // Loop thru data response
+                for (int i = 0; i < restaurants.length(); i++){
                     JSONObject r = restaurants.getJSONObject(i);
-                    System.out.println("data r " + r);
-
-                    int restaurantId = r.getInt("restaurantId");
-                    String r_id = String.valueOf(restaurantId);
-                    System.out.println("data r " + r_id);
-                    System.out.println("data r id " + i + " " + restaurantId);
-
+                    String restaurantId = r.getString("restaurantId");
                     String name = r.getString("name");
-                    System.out.println("data name " + i + " " + name);
-
                     HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("restaurantId", r_id);
-                    map.put("name", name);
-                    System.out.println("map here " + map);
+                    map.put("restaurantId", restaurantId);
+                    map.put("name",name);
                     restaurantsList.add(map);
                 }
-
-                System.out.println("restaurants>>>>>>  " + restaurants);
-                // Updating parsed JSON data into ListView by using SimpleAdapter, which links the data
-                // to the ListView
-                ListAdapter adapter = new SimpleAdapter(RestaurantsActivity.this, restaurantsList, R.layout.restaurant_item, new String[]{"restaurantId", "name"}, new int[]{R.id.tvItemId, R.id.tvItemName});
+                System.out.println(restaurantsList);
+                // update parsed JSON data into listview by using SimpleAdapter, which links the data to the listview
+                ListAdapter adapter = new SimpleAdapter(RestaurantsActivity.this,restaurantsList,R.layout.restaurant_item, new String[]{"restaurantId","name"},new int[]{R.id.tvItemId,R.id.tvItemName});
                 resList.setAdapter(adapter);
-
-                // res status success here
-            } else {
-                Toast.makeText(getApplicationContext(), "Request failed", Toast.LENGTH_LONG).show();
+            }else {
+                Toast.makeText(getApplicationContext(),"Request failed", Toast.LENGTH_LONG).show();
             }
-        } catch (JSONException e) {
-            // catch
-            Toast.makeText(getApplicationContext(), "Error in json", Toast.LENGTH_LONG).show();
+
+        }catch (JSONException e) {
+            Toast.makeText(getApplicationContext(),"Request failed", Toast.LENGTH_LONG).show();
         }
     } // checkResponse end
 
